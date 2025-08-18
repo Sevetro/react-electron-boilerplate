@@ -1,14 +1,14 @@
 import { app, BrowserWindow } from "electron";
 import path from "path";
 import { isDev } from "./utils.js";
+import { getPreloadPath } from "./path-resolver.js";
 
 app.whenReady().then(() => {
   const browserWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      preload: getPreloadPath(),
     },
   });
 

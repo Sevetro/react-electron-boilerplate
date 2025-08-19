@@ -1,6 +1,5 @@
-const electron = require("electron");
+import { contextBridge, ipcRenderer } from "electron";
 
-electron.contextBridge.exposeInMainWorld("electron", {
-  subscribeStatistics: (callback: (statistics: any) => void) => callback({}),
-  getStaticData: () => console.log("static"),
+contextBridge.exposeInMainWorld("electron", {
+  getCpuModel: () => ipcRenderer.invoke("getCpuModel"),
 });

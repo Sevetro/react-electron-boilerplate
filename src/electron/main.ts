@@ -1,7 +1,8 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { isDev } from "./utils.js";
 import { getPreloadPath } from "./path-resolver.js";
+import { getCpuModel } from "./node-example.js";
 
 app.whenReady().then(() => {
   const browserWindow = new BrowserWindow({
@@ -19,6 +20,10 @@ app.whenReady().then(() => {
       path.join(app.getAppPath(), "dist-react", "index.html")
     );
   }
+
+  ipcMain.handle("getCpuModel", () => {
+    return getCpuModel();
+  });
 
   browserWindow.on("closed", () => {
     app.quit();

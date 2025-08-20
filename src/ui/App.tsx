@@ -7,7 +7,6 @@ function App() {
 
   useEffect(() => {
     async function fetchCpuModel() {
-      //@ts-expect-error no types yet
       const cpuModel = await window.electron.getCpuModel();
       console.log("CPU Model:", cpuModel);
     }

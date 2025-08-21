@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
-import { isDev } from "./utils.js";
+import { ipcHandle, isDev } from "./utils.js";
 import { getPreloadPath } from "./path-resolver.js";
 import { getCpuModel } from "./node-example.js";
 
@@ -21,9 +21,7 @@ app.whenReady().then(() => {
     );
   }
 
-  ipcMain.handle("getCpuModel", () => {
-    return getCpuModel();
-  });
+  ipcHandle("getCpuModel", () => getCpuModel());
 
   browserWindow.on("closed", () => {
     app.quit();

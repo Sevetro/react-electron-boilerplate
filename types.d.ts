@@ -3,3 +3,7 @@ interface Window {
     getCpuModel: () => Promise<string>;
   };
 }
+
+type EventPayloadMap = {
+  getCpuModel: string;
+};

@@ -14,6 +14,12 @@ function App() {
     fetchCpuModel();
   }, []);
 
+  useEffect(() => {
+    window.electron.subscribeToRamUsage((ramUsage) =>
+      console.log("ramUsage: ", ramUsage)
+    );
+  }, []);
+
   return (
     <>
       <div>

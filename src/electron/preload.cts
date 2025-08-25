@@ -3,7 +3,7 @@ import { contextBridge, ipcRenderer } from "electron";
 contextBridge.exposeInMainWorld("electron", {
   getCpuModel: () => ipcInvoke("getCpuModel"),
   subscribeToRamUsage: (callback) => {
-    ipcOn("ramUsage", (ramUsage) => callback(ramUsage));
+    return ipcOn("ramUsage", (ramUsage) => callback(ramUsage));
   },
 } satisfies Window["electron"]);
 
@@ -17,5 +17,7 @@ function ipcOn<Key extends keyof EventPayloadMap>(
   key: Key,
   callback: (payload: EventPayloadMap[Key]) => void
 ) {
-  ipcRenderer.on(key, (_, payload) => callback(payload));
+  const cb = (_: Electron.IpcRendererEvent, payload: any) => callback(payload);
+  ipcRenderer.on(key, cb);
+  return () => ipcRenderer.off(key, cb);
 }

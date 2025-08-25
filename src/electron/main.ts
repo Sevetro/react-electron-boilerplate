@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from "electron";
-import path from "path";
+
 import { ipcMainHandle, isDev } from "./utils.js";
-import { getPreloadPath } from "./path-resolver.js";
+import { getPreloadPath, getUIPath } from "./path-resolver.js";
 import { getCpuModel, sendRamUsage } from "./node-example.js";
 
 app.whenReady().then(() => {
@@ -16,9 +16,7 @@ app.whenReady().then(() => {
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5132");
   } else {
-    mainWindow.loadFile(
-      path.join(app.getAppPath(), "dist-react", "index.html")
-    );
+    mainWindow.loadFile(getUIPath());
   }
 
   sendRamUsage(mainWindow);

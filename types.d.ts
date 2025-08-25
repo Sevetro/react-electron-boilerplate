@@ -1,7 +1,9 @@
 interface Window {
   electron: {
     getCpuModel: () => Promise<string>;
-    subscribeToRamUsage: (callback: (ramUsage: RamUsage) => void) => void;
+    subscribeToRamUsage: (
+      callback: (ramUsage: RamUsage) => void
+    ) => UnsubscribeFn;
   };
 }
 
@@ -14,3 +16,5 @@ type EventPayloadMap = {
   getCpuModel: string;
   ramUsage: RamUsage;
 };
+
+type UnsubscribeFn = () => void;

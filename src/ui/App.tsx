@@ -15,9 +15,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.electron.subscribeToRamUsage((ramUsage) =>
+    const unsub = window.electron.subscribeToRamUsage((ramUsage) =>
       console.log("ramUsage: ", ramUsage)
     );
+
+    return unsub;
   }, []);
 
   return (

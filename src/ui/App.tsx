@@ -1,9 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
 function App() {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchCpuModel() {
+      const cpuModel = await window.electron.getCpuModel();
+      console.log("CPU Model:", cpuModel);
+    }
+
+    fetchCpuModel();
+  }, []);
+
+  useEffect(() => {
+    const unsub = window.electron.subscribeToRamUsage((ramUsage) =>
+      console.log("ramUsage: ", ramUsage)
+    );
+
+    return unsub;
+  }, []);
 
   return (
     <>

@@ -1,26 +1,29 @@
 import { app, BrowserWindow } from "electron";
-import path from "path";
-import { isDev } from "./utils.js";
+
+import { ipcMainHandle, isDev } from "./utils.js";
+import { getPreloadPath, getUIPath } from "./path-resolver.js";
+import { getCpuModel, sendRamUsage } from "./node-example.js";
 
 app.whenReady().then(() => {
-  const browserWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      preload: getPreloadPath(),
     },
   });
 
   if (isDev()) {
-    browserWindow.loadURL("http://localhost:5132");
+    mainWindow.loadURL("http://localhost:5132");
   } else {
-    browserWindow.loadFile(
-      path.join(app.getAppPath(), "dist-react", "index.html")
-    );
+    mainWindow.loadFile(getUIPath());
   }
 
-  browserWindow.on("closed", () => {
+  sendRamUsage(mainWindow);
+
+  ipcMainHandle("getCpuModel", () => getCpuModel());
+
+  mainWindow.on("closed", () => {
     app.quit();
   });
 });
